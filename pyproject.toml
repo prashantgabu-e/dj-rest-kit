@@ -1,18 +1,39 @@
 [project]
-name = "example_package_YOUR_USERNAME_HERE"
+name = "dj-rest-kit"
 version = "0.0.1"
-authors = [
-  { name="Example Author", email="author@example.com" },
-]
+authors = [{ name="Aman Bothra", email="amanbothra1777@gmail.com"}]
+maintainers = [{ name="Prashant Gabu", email="prashantgabu.earn@gmail.com"}]
 description = "A small example package"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
-    "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "Django>=3.2",
+    "django-filter>=23.5",
+    "django-model-utils>=4.3.1",
+    "djangorestframework>=3.14.0"
 ]
 
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
+Homepage = "https://github.com/prashantgabu-e/dj-rest-kit"
+Issues = "https://github.com/prashantgabu-e/dj-rest-kit/issues"
+
+[tool.flit.module]
+name = "dj_rest_kit"

@@ -11,6 +11,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     A ModelSerializer that takes an additional `fields` argument that
     controls which fields should be displayed.
     """
+
     id = serializers.CharField(source="uuid", read_only=True)
 
     def __init__(self, *args, **kwargs):
@@ -46,6 +47,29 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                     # not in fields anyway
                     pass
 
+        for field_name, field in self.fields.items():
+            if isinstance(field, serializers.ManyRelatedField):
+                related_model = field.child_relation.queryset.model
+                slug_related_field = serializers.SlugRelatedField(
+                    slug_field="uuid",
+                    required=False,
+                    allow_null=True,
+                    allow_empty=True,
+                    queryset=related_model.objects.all(),
+                    many=True,
+                )
+                self.fields[field_name] = slug_related_field
+            elif isinstance(field, serializers.PrimaryKeyRelatedField):
+                related_model = field.queryset.model
+                slug_related_field = serializers.SlugRelatedField(
+                    slug_field="uuid",
+                    required=False,
+                    allow_null=True,
+                    allow_empty=True,
+                    queryset=related_model.objects.all(),
+                )
+                self.fields[field_name] = slug_related_field
+
     @staticmethod
     def remove_null_key_value_pair(dictionary):
         return helper.remove_null_key_value_pair(dictionary)
@@ -58,14 +82,14 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A valid number is required.")
 
     def unique_value_validator(
-            self,
-            field,
-            value,
-            error_message,
-            look_up,
-            check_parent_model=False,
-            model=None,
-            **kwargs
+        self,
+        field,
+        value,
+        error_message,
+        look_up,
+        check_parent_model=False,
+        model=None,
+        **kwargs,
     ):
         error_message = serializers.ValidationError(error_message)
         instance = self.instance
@@ -77,8 +101,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
         if instance:
             if (
-                    getattr(instance, field) != value
-                    and model.objects.filter(**kwargs).exists()
+                getattr(instance, field) != value
+                and model.objects.filter(**kwargs).exists()
             ):
                 raise error_message
         elif model.objects.filter(**kwargs).exists():
