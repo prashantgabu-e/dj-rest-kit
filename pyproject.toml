@@ -24,7 +24,10 @@ dependencies = [
     "Django>=3.2",
     "django-filter",
     "django-model-utils",
-    "djangorestframework>3.3"
+    "djangorestframework>3.3",
+    "setuptools",
+    "pytz",
+    "python-dateutil",
 ]
 
 [project.urls]
