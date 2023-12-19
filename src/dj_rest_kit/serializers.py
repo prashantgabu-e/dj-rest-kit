@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from src import helper
+from . import helper
 
 User = get_user_model()
 

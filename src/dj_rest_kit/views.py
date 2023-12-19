@@ -3,9 +3,9 @@ from rest_framework import filters, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src import mixins
-from src.helper import get_response_message
-from src.renderer import CustomRenderer
+from . import mixins
+from .helper import get_response_message
+from .renderer import CustomRenderer
 
 
 class BaseAPIView(APIView):
