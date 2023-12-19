@@ -73,7 +73,3 @@ class BaseViewSet(mixins.ViewSetMixin, viewsets.ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response({'message': 'Deleted successfully'})
-
-
-class BaseSlugViewSet(BaseViewSet):
-    lookup_field = "uuid"
