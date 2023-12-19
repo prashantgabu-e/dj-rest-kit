@@ -1,11 +1,10 @@
 [project]
 name = "dj-rest-kit"
-version = "0.0.5"
+version = "0.0.6"
 authors = [{ name="Aman Bothra", email="amanbothra1777@gmail.com"}]
 maintainers = [{ name="Prashant Gabu", email="prashantgabu.earn@gmail.com"}]
 description = "dj-rest-kit is a reusable Django application "
 readme = "README.md"
-requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
