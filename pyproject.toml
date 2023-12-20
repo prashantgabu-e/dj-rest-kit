@@ -28,6 +28,7 @@ dependencies = [
     "setuptools",
     "pytz",
     "python-dateutil",
+    "django-json-widget==1.1.1",
 ]
 
 [project.urls]
