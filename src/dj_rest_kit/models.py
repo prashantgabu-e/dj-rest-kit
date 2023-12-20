@@ -48,7 +48,7 @@ class BaseModel(TimeStampedModel):
 
 
 class BaseUUIDModel(BaseModel):
-    uuid = UUIDField(default=uuid.uuid4, db_index=True, unique=True)
+    uuid = UUIDField(default=uuid.uuid4, db_index=True, unique=True, editable=False)
 
     class Meta:
         abstract = True
