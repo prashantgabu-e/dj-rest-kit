@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
-from src import helper
+from django.db import models
+from . import helper
 
 User = get_user_model()
 
@@ -11,8 +11,6 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     A ModelSerializer that takes an additional `fields` argument that
     controls which fields should be displayed.
     """
-
-    id = serializers.CharField(source="uuid", read_only=True)
 
     def __init__(self, *args, **kwargs):
         # Don't pass the 'fields' arg up to the superclass
@@ -47,28 +45,29 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                     # not in fields anyway
                     pass
 
-        for field_name, field in self.fields.items():
-            if isinstance(field, serializers.ManyRelatedField):
-                related_model = field.child_relation.queryset.model
-                slug_related_field = serializers.SlugRelatedField(
-                    slug_field="uuid",
-                    required=False,
-                    allow_null=True,
-                    allow_empty=True,
-                    queryset=related_model.objects.all(),
-                    many=True,
-                )
-                self.fields[field_name] = slug_related_field
-            elif isinstance(field, serializers.PrimaryKeyRelatedField):
-                related_model = field.queryset.model
-                slug_related_field = serializers.SlugRelatedField(
-                    slug_field="uuid",
-                    required=False,
-                    allow_null=True,
-                    allow_empty=True,
-                    queryset=related_model.objects.all(),
-                )
-                self.fields[field_name] = slug_related_field
+            # Apply changes only if the model has a UUID field
+            for field_name, field in self.fields.items():
+                if isinstance(field, serializers.ManyRelatedField):
+                    related_model = field.child_relation.queryset.model
+                    slug_related_field = serializers.SlugRelatedField(
+                        slug_field="uuid",
+                        required=False,
+                        allow_null=True,
+                        allow_empty=True,
+                        queryset=related_model.objects.all(),
+                        many=True,
+                    )
+                    self.fields[field_name] = slug_related_field
+                elif isinstance(field, serializers.PrimaryKeyRelatedField):
+                    related_model = field.queryset.model
+                    slug_related_field = serializers.SlugRelatedField(
+                        slug_field="uuid",
+                        required=False,
+                        allow_null=True,
+                        allow_empty=True,
+                        queryset=related_model.objects.all(),
+                    )
+                    self.fields[field_name] = slug_related_field
 
     @staticmethod
     def remove_null_key_value_pair(dictionary):
