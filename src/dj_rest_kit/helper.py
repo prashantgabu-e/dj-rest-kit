@@ -5,6 +5,7 @@ from uuid import uuid4
 import pytz
 from dateutil import parser
 from django.conf import settings
+from django.utils.deconstruct import deconstructible
 
 from . import constants
 
@@ -99,16 +100,21 @@ def convert_user_datetime_str_to_utc(datetime_str, timezone_str):
     return utc_datetime
 
 
-def path_and_rename(sub_path):
+@deconstructible
+class PathAndRename(object):
     """
     Returns a function that can be used as the `upload_to` parameter for Django ImageField or FileField.
 
     This function generates a new filename for uploaded files by appending a UUID to the
     original filename and placing it in the specified subdirectory path.
     """
-    def wrapper(instance, filename):
-        ext = filename.split('.')[-1]
-        filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(sub_path, filename)
 
-    return wrapper
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+        # return the whole path to the file
+        return os.path.join(self.path, filename)
