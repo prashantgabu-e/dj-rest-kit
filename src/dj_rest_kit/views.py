@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from . import mixins
-from .helper import get_response_message
+from .helpers import get_response_message
 from .renderer import CustomRenderer
 
 
